@@ -12,31 +12,24 @@
     <div class="container">
         <div class="header">
             <h1>Unqork Request Payload Generator</h1>
-            <p>Transform CSV data into ROUTER API request payloads</p>
+            <p>Transform Data into ROUTER API request payloads</p>
         </div>
         
         <div class="content-1">
             <div class="input-section">
                 <div class="section">
-                    <h2>📁 Upload CSV File</h2>
+                    <h2>📁 Upload File</h2>
                     <div class="form-group">
-                        <label for="csvFile">Select CSV File:</label>
-                        <input type="file" id="csvFile" accept=".csv" />
-                    </div>
-                </div>
-                <div class="section">
-                    <h2>📁 Upload JSON File</h2>
-                    <div class="form-group">
-                        <label for="jsonFile">Select JSON File:</label>
-                        <input type="file" id="jsonFile" accept=".json" />
+                        <label for="file-input">Select CSV or JSON File:</label>
+                        <input type="file" id="file-input" accept=".csv,.json" />
                     </div>
                 </div>
             </div>
             <div class="section">
-                <h2>⚙️ Request Configuration</h2>
+                <h2>⚙️ Request Config</h2>
                 <div class="form-group">
                     <label for="method">HTTP Method:</label>
-                    <select id="method" disabled required>
+                    <select id="method" class="disabled" disabled required>
                         <option value="">Options</option>
                         <option value="POST">POST</option>
                         <option value="PUT">PUT</option>
@@ -45,22 +38,34 @@
                 </div>
                 <div class="form-group">
                     <label for="path">API PATH:</label>
-                    <input type="text" id="path" placeholder="e.g. /v1/clients" value=""  disabled required />
+                    <input type="text" id="path" class="disabled" placeholder="e.g. /v1/clients" value=""  disabled required />
                 </div>
             </div>
         </div>  
         <div class="content-2">
-            <div class="csv-preview" id="previewSection" style="display: none;">
-                <h2>CSV Preview</h2>
-                <div id="csvPreview"></div>
+            <div class="data-preview" id="preview-data" style="display: none;">
+                <h2>Preview Data</h2>
+                <div id="data-preview-table"></div>
+            </div>
+            <div class="field-selection" id="mapping-fields" style="display: none;">
+                <h2> Field Mapping</h2>  
+                <p> Adjust Key Mappings to Suit Your Workflow </p>  
+                <div class="case-group">
+                    <label for="case">CASE:</label>
+                    <select id="case" required>
+                        <option value="SNAKE">snake_case</option>
+                        <option value="CAMEL" selected>camelCase</option>
+                    </select>
+                </div>
+                
+                <div id="mapping-container" class="mapping-container"></div>
+
             </div>
             <div class="field-selection" id="mapping-query" style="display: none;">
-                <h2>🔗 Query Field Selection & Mapping</h2>
-                <p>Select which fields to include and map CSV headers to camelCase key names:</p>
-                
+                <h2>🔗 Query Field Selection</h2>
                 <div class="select-all-container">
                     <label>
-                        <input type="checkbox" class="select-all-checkbox" id="selectAllQuery" onchange="toggleSelectAll('selectAllQuery','.field-checkbox-query','GET')" checked="true">
+                        <input type="checkbox" class="select-all-checkbox" id="select-query" onchange="toggleSelectAll('select-query','.field-checkbox-query')" checked="true">
                         Select/Deselect All Fields
                     </label>
                 </div>
@@ -68,14 +73,11 @@
                 <div id="mapping-query-container" class="mapping-container"></div>
 
             </div>
-
             <div class="field-selection" id="mapping-body" style="display: none;">
-                <h2>🔗 Body Field Selection & Mapping</h2>
-                <p>Select which fields to include and map CSV headers to camelCase key names:</p>
-                
+                <h2>🔗 Body Field Selection</h2>
                 <div class="select-all-container">
                     <label>
-                        <input type="checkbox" class="select-all-checkbox" id="selectAllBody" onchange="toggleSelectAll('selectAllBody','.field-checkbox',null)" checked="true">
+                        <input type="checkbox" class="select-all-checkbox" id="select-body" onchange="toggleSelectAll('select-body','.field-checkbox-body')" checked="true">
                         Select/Deselect All Fields
                     </label>
                 </div>
@@ -89,6 +91,7 @@
             <div class="section-payload" id="outputSection" style="display: none;">
                 <h2>📄 Generated Payload</h2>
                 <button class="copy-btn" onclick="copyToClipboard()">Copy JSON</button>
+                <button class="download-btn" onclick="downloadJson()">Download JSON</button>
                 <div class="json-output" id="jsonOutput"></div>
             </div>
         </div>
